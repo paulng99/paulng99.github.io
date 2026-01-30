@@ -1,1 +1,47 @@
+# 物理實驗演示網站配置 / Physics Experiment Demo Website Configuration
 
+# 基本網站信息 / Basic Site Information
+title: 物理實驗演示網站 / Physics Experiment Demo Website
+email: paulng99@example.com
+description: >-
+  一個展示各種物理實驗互動演示的網站。
+  A website showcasing interactive demonstrations of various physics experiments.
+baseurl: ""
+url: "https://paulng99.github.io"
+
+# 構建設置 / Build Settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# 排除文件 / Exclude Files
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# 插件 / Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO 標籤配置 / SEO Tag Configuration
+twitter:
+  username: paulng99
+  card: summary
+
+# 語言設置 / Language Settings
+languages:
+  - zh
+  - en
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
