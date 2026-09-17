@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2027 香港中學文憑考試倒數｜HKDSE 2027 Countdown</title>
+  <meta name="description" content="2027 HKDSE 考試倒數與筆試時間表（資料來源：香港考試及評核局）" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --bg2: #121a2b;
+      --card: #182338;
+      --stroke: rgba(255,255,255,0.08);
+      --text: #eef3ff;
+      --muted: #9aa8c3;
+      --accent: #5b8cff;
+      --accent2: #35d0ba;
+      --warn: #ffb020;
+      --shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(91,140,255,0.25), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(53,208,186,0.18), transparent 50%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    .wrap { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
+    header { text-align: center; margin-bottom: 2rem; }
+    .badge {
+      display: inline-flex; gap: .5rem; align-items: center;
+      padding: .35rem .8rem; border-radius: 999px;
+      background: rgba(91,140,255,0.15); border: 1px solid rgba(91,140,255,0.35);
+      color: #c9d8ff; font-size: .85rem; margin-bottom: 1rem;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 .4rem; letter-spacing: .02em; }
+    .sub { color: var(--muted); margin: 0; line-height: 1.6; }
+    .hero {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent), var(--card);
+      border: 1px solid var(--stroke); border-radius: 24px; padding: 1.5rem;
+      box-shadow: var(--shadow); margin-bottom: 1.25rem;
+    }
+    .hero h2 { margin: 0 0 .25rem; font-size: 1.15rem; }
+    .hero .en { color: var(--muted); font-size: .95rem; margin-bottom: 1.25rem; }
+    .digits {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem;
+    }
+    .digit {
+      background: var(--bg2); border: 1px solid var(--stroke); border-radius: 16px;
+      padding: 1rem .5rem; text-align: center;
+    }
+    .digit .n {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: clamp(1.6rem, 6vw, 2.8rem); font-weight: 700; color: #fff;
+    }
+    .digit .l { color: var(--muted); font-size: .8rem; margin-top: .25rem; }
+    .grid2 {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+    }
+    @media (max-width: 720px) {
+      .digits { grid-template-columns: repeat(2, 1fr); }
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--stroke); border-radius: 18px;
+      padding: 1.1rem 1.2rem;
+    }
+    .card h3 { margin: 0 0 .2rem; font-size: 1rem; }
+    .card .meta { color: var(--muted); font-size: .85rem; margin-bottom: .8rem; }
+    .mini {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 1.35rem; font-weight: 700; color: var(--accent2);
+    }
+    section h2 { font-size: 1.2rem; margin: 1.5rem 0 .75rem; }
+    table {
+      width: 100%; border-collapse: collapse; background: var(--card);
+      border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden;
+      font-size: .92rem;
+    }
+    th, td { padding: .7rem .8rem; text-align: left; border-bottom: 1px solid var(--stroke); vertical-align: top; }
+    th { background: rgba(255,255,255,0.04); color: var(--muted); font-weight: 500; }
+    tr:last-child td { border-bottom: none; }
+    tr.past { opacity: .45; }
+    tr.next { outline: 1px solid rgba(53,208,186,0.55); background: rgba(53,208,186,0.08); }
+    .note {
+      background: rgba(255,176,32,0.08); border: 1px solid rgba(255,176,32,0.25);
+      color: #ffd79a; border-radius: 14px; padding: 1rem 1.1rem; margin-top: 1rem;
+      line-height: 1.55; font-size: .92rem;
+    }
+    footer {
+      margin-top: 2rem; color: var(--muted); font-size: .85rem; line-height: 1.6; text-align: center;
+    }
+    footer a { color: #b7c9ff; }
+    .tz { font-size: .8rem; color: var(--muted); margin-top: .75rem; }
+    .tag {
+      display: inline-block; font-size: .72rem; padding: .15rem .45rem; border-radius: 6px;
+      background: rgba(91,140,255,0.2); color: #c9d8ff; margin-left: .35rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge">HKDSE 2027 · 考試倒數</div>
+      <h1>2027 香港中學文憑考試倒數</h1>
+      <p class="sub">Hong Kong Diploma of Secondary Education Examination 2027<br />資料按考評局公開時間表（附件一）</p>
+    </header>
+
+    <div class="hero" id="hero">
+      <h2>距離筆試開始（視覺藝術）</h2>
+      <div class="en">Countdown to first written exam — Visual Arts · 6 Apr 2027</div>
+      <div class="digits" id="mainCountdown" aria-live="polite"></div>
+      <div class="tz">時區：香港時間（Asia/Hong_Kong）· 官方時間表只列上午／下午；倒數以當日上午 08:30 起計</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>中國語文</h3>
+        <div class="meta">Chinese Language · 8 Apr 2027 · 上午</div>
+        <div class="mini" id="cdChinese">—</div>
+      </div>
+      <div class="card">
+        <h3>英國語文（一）及（二）</h3>
+        <div class="meta">English Language 1, 2 · 9 Apr 2027 · 上午</div>
+        <div class="mini" id="cdEnglish">—</div>
+      </div>
+    </div>
+
+    <section>
+      <h2>筆試時間表 Written timetable</h2>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>日期 Date</th><th>時段 Session</th><th>科目／卷別 Subject / Paper</th></tr>
+          </thead>
+          <tbody id="timetableBody"></tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>其他考核時段</strong>（請以准考證為準）：<br />
+        體育實習：2027年2月下旬至3月下旬 · 音樂實習：3月上旬至中旬 · 英國語文口試：3月中旬至下旬（一至五；SEN 場為3月下旬）<br />
+        後備日 Reserve：2027年5月3日下午、5月4日全日 · 5月1日為勞動節。<br />
+        放榜（暫定）：約 2027年7月14日。<br />
+        <strong>註 2：</strong>英語文學、科技與生活、體育及音樂科日期，將於報考截止後落實（時間表上有多個暫定日子）。
+      </div>
+    </section>
+
+    <footer>
+      資料來源：<a href="https://www.hkeaa.edu.hk/DocLibrary/HKDSE/Exam_Timetable/2027_DSE_Timetable.pdf" target="_blank" rel="noopener">香港考試及評核局 2027 DSE 考試時間表 PDF</a><br />
+      時間表或會修訂；考生應以准考證所列日期及時間為準。<br />
+      本頁為非官方倒數工具，與考評局無附屬關係。
+    </footer>
+  </div>
+  <script>
+    // Source: HKEAA 2027 DSE Timetable (Annex 1)
+    // Official PDF lists AM/PM only; countdown anchors use 08:30 (AM) / 13:30 (PM).
+    const EXAMS = [
+      { date: "2027-04-06", session: "AM", time: "08:30", en: "Visual Arts 1, 2", zh: "視覺藝術（一）及（二）" },
+      { date: "2027-04-07", session: "AM", time: "08:30", en: "Chinese Literature 1, 2 / Technology & Living 1, 2", zh: "中國文學（一）及（二）／科技與生活（一）及（二）", note: "科技與生活日期待報考截止後落實（註 2）", tentative: true },
+      { date: "2027-04-08", session: "AM", time: "08:30", en: "Chinese Language 1, 2", zh: "中國語文（一）及（二）" },
+      { date: "2027-04-09", session: "AM", time: "08:30", en: "English Language 1, 2", zh: "英國語文（一）及（二）" },
+      { date: "2027-04-10", session: "AM", time: "08:30", en: "English Language 3 (Listening and Integrated Skills)", zh: "英國語文（三）（聆聽及綜合能力）" },
+      { date: "2027-04-12", session: "AM", time: "08:30", en: "Mathematics Compulsory Part 1, 2", zh: "數學必修部分（一）及（二）" },
+      { date: "2027-04-13", session: "AM", time: "08:30", en: "Citizenship and Social Development", zh: "公民與社會發展" },
+      { date: "2027-04-14", session: "AM", time: "08:30", en: "Health Management & Social Care 1, 2", zh: "健康管理與社會關懷（一）及（二）" },
+      { date: "2027-04-15", session: "AM", time: "08:30", en: "Chemistry 1, 2", zh: "化學（一）及（二）" },
+      { date: "2027-04-16", session: "AM", time: "08:30", en: "Geography 1, 2", zh: "地理（一）及（二）" },
+      { date: "2027-04-17", session: "AM", time: "08:30", en: "Information & Communication Technology 1, 2", zh: "資訊及通訊科技（一）及（二）" },
+      { date: "2027-04-19", session: "AM", time: "08:30", en: "Biology 1, 2", zh: "生物（一）及（二）" },
+      { date: "2027-04-20", session: "AM", time: "08:30", en: "Design & Applied Technology 1, 2 / Literature in English 1", zh: "設計與應用科技（一）及（二）／英語文學（一）", note: "英語文學日期待落實（註 2）", tentative: true },
+      { date: "2027-04-20", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "日期待落實（註 2）", tentative: true },
+      { date: "2027-04-21", session: "AM", time: "08:30", en: "Physics 1, 2", zh: "物理（一）及（二）" },
+      { date: "2027-04-22", session: "AM", time: "08:30", en: "Economics 1, 2", zh: "經濟（一）及（二）" },
+      { date: "2027-04-23", session: "AM", time: "08:30", en: "Mathematics Extended Part Modules 1, 2", zh: "數學延伸部分單元（一）及（二）" },
+      { date: "2027-04-24", session: "AM", time: "08:30", en: "Chinese History 1, 2", zh: "中國歷史（一）及（二）" },
+      { date: "2027-04-26", session: "AM", time: "08:30", en: "Business, Accounting & Financial Studies 1, 2", zh: "企業、會計與財務概論（一）及（二）" },
+      { date: "2027-04-27", session: "AM", time: "08:30", en: "History 1, 2", zh: "歷史（一）及（二）" },
+      { date: "2027-04-28", session: "AM", time: "08:30", en: "Tourism & Hospitality Studies 1, 2", zh: "旅遊與款待（一）及（二）" },
+      { date: "2027-04-29", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
+      { date: "2027-04-29", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "暫定（註 2）", tentative: true },
+      { date: "2027-04-30", session: "AM", time: "08:30", en: "Ethics & Religious Studies 1, 2", zh: "倫理與宗教（一）及（二）" },
+      { date: "2027-05-03", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
+      { date: "2027-05-03", session: "PM", time: "13:30", en: "Literature in English 2 / Reserve", zh: "英語文學（二）／後備", note: "英語文學暫定（註 2）", tentative: true },
+      { date: "2027-05-04", session: "AM", time: "08:30", en: "Reserve", zh: "後備" },
+    ];
+
+    function hkDate(dateStr, timeStr) {
+      return new Date(`${dateStr}T${timeStr}:00+08:00`);
+    }
+
+    function parts(ms) {
+      if (ms <= 0) return { d: 0, h: 0, m: 0, s: 0, done: true };
+      const s = Math.floor(ms / 1000);
+      return {
+        d: Math.floor(s / 86400),
+        h: Math.floor((s % 86400) / 3600),
+        m: Math.floor((s % 3600) / 60),
+        s: s % 60,
+        done: false,
+      };
+    }
+
+    function renderDigits(el, p, finishedText) {
+      if (p.done) {
+        el.innerHTML = `<div class="digit" style="grid-column:1/-1"><div class="n" style="font-size:1.4rem">${finishedText}</div></div>`;
+        return;
+      }
+      el.innerHTML = [
+        ["日", p.d], ["時", p.h], ["分", p.m], ["秒", p.s],
+      ].map(([l, n]) => `<div class="digit"><div class="n">${String(n).padStart(2,"0")}</div><div class="l">${l}</div></div>`).join("");
+    }
+
+    function fmtRemain(p) {
+      if (p.done) return "已開始／已過去";
+      return `${p.d} 日 ${String(p.h).padStart(2,"0")}:${String(p.m).padStart(2,"0")}:${String(p.s).padStart(2,"0")}`;
+    }
+
+    function prettyDate(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const wd2 = ["日","一","二","三","四","五","六"][new Date(Date.UTC(y, m - 1, d, 4, 0, 0)).getUTCDay()];
+      return `${m}月${d}日（星期${wd2}）`;
+    }
+
+    function sessionLabel(s) {
+      return s === "PM" ? "下午 PM" : "上午 AM";
+    }
+
+    function tick() {
+      const now = Date.now();
+      const first = hkDate("2027-04-06", "08:30");
+      renderDigits(document.getElementById("mainCountdown"), parts(first - now), "筆試期已開始");
+
+      document.getElementById("cdChinese").textContent =
+        fmtRemain(parts(hkDate("2027-04-08", "08:30") - now));
+      document.getElementById("cdEnglish").textContent =
+        fmtRemain(parts(hkDate("2027-04-09", "08:30") - now));
+
+      let nextIdx = EXAMS.findIndex(e => hkDate(e.date, e.time) > new Date(now));
+      document.querySelectorAll("#timetableBody tr").forEach((tr, i) => {
+        tr.classList.toggle("past", nextIdx !== -1 ? i < nextIdx : true);
+        tr.classList.toggle("next", i === nextIdx);
+      });
+    }
+
+    function buildTable() {
+      const body = document.getElementById("timetableBody");
+      body.innerHTML = EXAMS.map(e => {
+        const note = e.note ? `<div style="color:var(--muted);font-size:.8rem;margin-top:.2rem">${e.note}</div>` : "";
+        const tag = e.tentative ? `<span class="tag">暫定</span>` : "";
+        return `<tr data-start="${e.date}T${e.time}">
+          <td>${prettyDate(e.date)}<div style="color:var(--muted);font-size:.8rem">${e.date}</div></td>
+          <td>${sessionLabel(e.session)}</td>
+          <td><strong>${e.zh}</strong>${tag}<div style="color:var(--muted);font-size:.85rem">${e.en}</div>${note}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    buildTable();
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
