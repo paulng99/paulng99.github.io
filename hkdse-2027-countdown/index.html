@@ -46,6 +46,7 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent), var(--card);
       border: 1px solid var(--stroke); border-radius: 24px; padding: 1.5rem;
       box-shadow: var(--shadow); margin-bottom: 1.25rem;
+      scroll-margin-top: 1rem;
     }
     .hero h2 { margin: 0 0 .25rem; font-size: 1.15rem; }
     .hero .en { color: var(--muted); font-size: .95rem; margin-bottom: 1.25rem; }
@@ -61,22 +62,34 @@
       font-size: clamp(1.6rem, 6vw, 2.8rem); font-weight: 700; color: #fff;
     }
     .digit .l { color: var(--muted); font-size: .8rem; margin-top: .25rem; }
-    .grid2 {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+    .grid4 {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .grid4 { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 720px) {
       .digits { grid-template-columns: repeat(2, 1fr); }
-      .grid2 { grid-template-columns: 1fr; }
+      .grid4 { grid-template-columns: 1fr; }
     }
     .card {
       background: var(--card); border: 1px solid var(--stroke); border-radius: 18px;
-      padding: 1.1rem 1.2rem;
+      padding: 1.1rem 1.2rem; cursor: pointer;
+      transition: border-color .15s, outline-color .15s, background .15s;
+    }
+    .card:hover, .card:focus-visible {
+      border-color: rgba(53,208,186,0.45);
+      outline: none;
+    }
+    .card.active {
+      outline: 1px solid rgba(53,208,186,0.55);
+      background: rgba(53,208,186,0.08);
     }
     .card h3 { margin: 0 0 .2rem; font-size: 1rem; }
     .card .meta { color: var(--muted); font-size: .85rem; margin-bottom: .8rem; }
     .mini {
       font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 1.35rem; font-weight: 700; color: var(--accent2);
+      font-size: 1.2rem; font-weight: 700; color: var(--accent2);
     }
     section h2 { font-size: 1.2rem; margin: 1.5rem 0 .75rem; }
     table {
@@ -89,6 +102,16 @@
     tr:last-child td { border-bottom: none; }
     tr.past { opacity: .45; }
     tr.next { outline: 1px solid rgba(53,208,186,0.55); background: rgba(53,208,186,0.08); }
+    tbody tr {
+      cursor: pointer;
+      transition: background .12s;
+    }
+    tbody tr:hover { background: rgba(91,140,255,0.1); }
+    tbody tr.selected {
+      outline: 1px solid rgba(91,140,255,0.7);
+      background: rgba(91,140,255,0.14);
+    }
+    .hint { color: var(--muted); font-size: .85rem; margin: -.25rem 0 .75rem; }
     .note {
       background: rgba(255,176,32,0.08); border: 1px solid rgba(255,176,32,0.25);
       color: #ffd79a; border-radius: 14px; padding: 1rem 1.1rem; margin-top: 1rem;
@@ -103,6 +126,13 @@
       display: inline-block; font-size: .72rem; padding: .15rem .45rem; border-radius: 6px;
       background: rgba(91,140,255,0.2); color: #c9d8ff; margin-left: .35rem;
     }
+    .reset {
+      margin-top: .85rem; background: transparent; border: 1px solid var(--stroke);
+      color: var(--muted); border-radius: 999px; padding: .35rem .85rem; font: inherit;
+      font-size: .85rem; cursor: pointer;
+    }
+    .reset:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+    .reset[hidden] { display: none; }
   </style>
 </head>
 <body>
@@ -114,27 +144,39 @@
     </header>
 
     <div class="hero" id="hero">
-      <h2>距離筆試開始（視覺藝術）</h2>
-      <div class="en">Countdown to first written exam — Visual Arts · 6 Apr 2027</div>
+      <h2 id="heroTitle">距離筆試開始（視覺藝術）</h2>
+      <div class="en" id="heroEn">Countdown to first written exam — Visual Arts · 6 Apr 2027</div>
       <div class="digits" id="mainCountdown" aria-live="polite"></div>
-      <div class="tz">時區：香港時間（Asia/Hong_Kong）· 官方時間表只列上午／下午；倒數以當日上午 08:30 起計</div>
+      <div class="tz" id="heroTz">時區：香港時間（Asia/Hong_Kong）· 官方時間表只列上午／下午；倒數以當日上午 08:30 起計</div>
+      <button type="button" class="reset" id="resetFocus" hidden>回到首科筆試倒數</button>
     </div>
 
-    <div class="grid2">
-      <div class="card">
+    <div class="grid4">
+      <div class="card" data-focus="chinese" tabindex="0" role="button">
         <h3>中國語文</h3>
         <div class="meta">Chinese Language · 8 Apr 2027 · 上午</div>
         <div class="mini" id="cdChinese">—</div>
       </div>
-      <div class="card">
+      <div class="card" data-focus="english" tabindex="0" role="button">
         <h3>英國語文（一）及（二）</h3>
         <div class="meta">English Language 1, 2 · 9 Apr 2027 · 上午</div>
         <div class="mini" id="cdEnglish">—</div>
+      </div>
+      <div class="card" data-focus="math" tabindex="0" role="button">
+        <h3>數學必修部分</h3>
+        <div class="meta">Mathematics Compulsory · 12 Apr 2027 · 上午</div>
+        <div class="mini" id="cdMath">—</div>
+      </div>
+      <div class="card" data-focus="csd" tabindex="0" role="button">
+        <h3>公民與社會發展</h3>
+        <div class="meta">CSD · 13 Apr 2027 · 上午</div>
+        <div class="mini" id="cdCsd">—</div>
       </div>
     </div>
 
     <section>
       <h2>筆試時間表 Written timetable</h2>
+      <p class="hint">點選任一科目，上方主倒數會改為該科。</p>
       <div style="overflow-x:auto">
         <table>
           <thead>
@@ -159,37 +201,42 @@
     </footer>
   </div>
   <script>
-    // Source: HKEAA 2027 DSE Timetable (Annex 1)
-    // Official PDF lists AM/PM only; countdown anchors use 08:30 (AM) / 13:30 (PM).
     const EXAMS = [
-      { date: "2027-04-06", session: "AM", time: "08:30", en: "Visual Arts 1, 2", zh: "視覺藝術（一）及（二）" },
-      { date: "2027-04-07", session: "AM", time: "08:30", en: "Chinese Literature 1, 2 / Technology & Living 1, 2", zh: "中國文學（一）及（二）／科技與生活（一）及（二）", note: "科技與生活日期待報考截止後落實（註 2）", tentative: true },
-      { date: "2027-04-08", session: "AM", time: "08:30", en: "Chinese Language 1, 2", zh: "中國語文（一）及（二）" },
-      { date: "2027-04-09", session: "AM", time: "08:30", en: "English Language 1, 2", zh: "英國語文（一）及（二）" },
-      { date: "2027-04-10", session: "AM", time: "08:30", en: "English Language 3 (Listening and Integrated Skills)", zh: "英國語文（三）（聆聽及綜合能力）" },
-      { date: "2027-04-12", session: "AM", time: "08:30", en: "Mathematics Compulsory Part 1, 2", zh: "數學必修部分（一）及（二）" },
-      { date: "2027-04-13", session: "AM", time: "08:30", en: "Citizenship and Social Development", zh: "公民與社會發展" },
-      { date: "2027-04-14", session: "AM", time: "08:30", en: "Health Management & Social Care 1, 2", zh: "健康管理與社會關懷（一）及（二）" },
-      { date: "2027-04-15", session: "AM", time: "08:30", en: "Chemistry 1, 2", zh: "化學（一）及（二）" },
-      { date: "2027-04-16", session: "AM", time: "08:30", en: "Geography 1, 2", zh: "地理（一）及（二）" },
-      { date: "2027-04-17", session: "AM", time: "08:30", en: "Information & Communication Technology 1, 2", zh: "資訊及通訊科技（一）及（二）" },
-      { date: "2027-04-19", session: "AM", time: "08:30", en: "Biology 1, 2", zh: "生物（一）及（二）" },
-      { date: "2027-04-20", session: "AM", time: "08:30", en: "Design & Applied Technology 1, 2 / Literature in English 1", zh: "設計與應用科技（一）及（二）／英語文學（一）", note: "英語文學日期待落實（註 2）", tentative: true },
-      { date: "2027-04-20", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "日期待落實（註 2）", tentative: true },
-      { date: "2027-04-21", session: "AM", time: "08:30", en: "Physics 1, 2", zh: "物理（一）及（二）" },
-      { date: "2027-04-22", session: "AM", time: "08:30", en: "Economics 1, 2", zh: "經濟（一）及（二）" },
-      { date: "2027-04-23", session: "AM", time: "08:30", en: "Mathematics Extended Part Modules 1, 2", zh: "數學延伸部分單元（一）及（二）" },
-      { date: "2027-04-24", session: "AM", time: "08:30", en: "Chinese History 1, 2", zh: "中國歷史（一）及（二）" },
-      { date: "2027-04-26", session: "AM", time: "08:30", en: "Business, Accounting & Financial Studies 1, 2", zh: "企業、會計與財務概論（一）及（二）" },
-      { date: "2027-04-27", session: "AM", time: "08:30", en: "History 1, 2", zh: "歷史（一）及（二）" },
-      { date: "2027-04-28", session: "AM", time: "08:30", en: "Tourism & Hospitality Studies 1, 2", zh: "旅遊與款待（一）及（二）" },
-      { date: "2027-04-29", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
-      { date: "2027-04-29", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "暫定（註 2）", tentative: true },
-      { date: "2027-04-30", session: "AM", time: "08:30", en: "Ethics & Religious Studies 1, 2", zh: "倫理與宗教（一）及（二）" },
-      { date: "2027-05-03", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
-      { date: "2027-05-03", session: "PM", time: "13:30", en: "Literature in English 2 / Reserve", zh: "英語文學（二）／後備", note: "英語文學暫定（註 2）", tentative: true },
-      { date: "2027-05-04", session: "AM", time: "08:30", en: "Reserve", zh: "後備" },
+      { id: "va", date: "2027-04-06", session: "AM", time: "08:30", en: "Visual Arts 1, 2", zh: "視覺藝術（一）及（二）" },
+      { id: "lit-tl", date: "2027-04-07", session: "AM", time: "08:30", en: "Chinese Literature 1, 2 / Technology & Living 1, 2", zh: "中國文學（一）及（二）／科技與生活（一）及（二）", note: "科技與生活日期待報考截止後落實（註 2）", tentative: true },
+      { id: "chinese", date: "2027-04-08", session: "AM", time: "08:30", en: "Chinese Language 1, 2", zh: "中國語文（一）及（二）" },
+      { id: "english", date: "2027-04-09", session: "AM", time: "08:30", en: "English Language 1, 2", zh: "英國語文（一）及（二）" },
+      { id: "eng3", date: "2027-04-10", session: "AM", time: "08:30", en: "English Language 3 (Listening and Integrated Skills)", zh: "英國語文（三）（聆聽及綜合能力）" },
+      { id: "math", date: "2027-04-12", session: "AM", time: "08:30", en: "Mathematics Compulsory Part 1, 2", zh: "數學必修部分（一）及（二）" },
+      { id: "csd", date: "2027-04-13", session: "AM", time: "08:30", en: "Citizenship and Social Development", zh: "公民與社會發展" },
+      { id: "hmsc", date: "2027-04-14", session: "AM", time: "08:30", en: "Health Management & Social Care 1, 2", zh: "健康管理與社會關懷（一）及（二）" },
+      { id: "chem", date: "2027-04-15", session: "AM", time: "08:30", en: "Chemistry 1, 2", zh: "化學（一）及（二）" },
+      { id: "geo", date: "2027-04-16", session: "AM", time: "08:30", en: "Geography 1, 2", zh: "地理（一）及（二）" },
+      { id: "ict", date: "2027-04-17", session: "AM", time: "08:30", en: "Information & Communication Technology 1, 2", zh: "資訊及通訊科技（一）及（二）" },
+      { id: "bio", date: "2027-04-19", session: "AM", time: "08:30", en: "Biology 1, 2", zh: "生物（一）及（二）" },
+      { id: "dat", date: "2027-04-20", session: "AM", time: "08:30", en: "Design & Applied Technology 1, 2 / Literature in English 1", zh: "設計與應用科技（一）及（二）／英語文學（一）", note: "英語文學日期待落實（註 2）", tentative: true },
+      { id: "lit2a", date: "2027-04-20", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "日期待落實（註 2）", tentative: true },
+      { id: "phy", date: "2027-04-21", session: "AM", time: "08:30", en: "Physics 1, 2", zh: "物理（一）及（二）" },
+      { id: "econ", date: "2027-04-22", session: "AM", time: "08:30", en: "Economics 1, 2", zh: "經濟（一）及（二）" },
+      { id: "m1m2", date: "2027-04-23", session: "AM", time: "08:30", en: "Mathematics Extended Part Modules 1, 2", zh: "數學延伸部分單元（一）及（二）" },
+      { id: "chist", date: "2027-04-24", session: "AM", time: "08:30", en: "Chinese History 1, 2", zh: "中國歷史（一）及（二）" },
+      { id: "bafs", date: "2027-04-26", session: "AM", time: "08:30", en: "Business, Accounting & Financial Studies 1, 2", zh: "企業、會計與財務概論（一）及（二）" },
+      { id: "hist", date: "2027-04-27", session: "AM", time: "08:30", en: "History 1, 2", zh: "歷史（一）及（二）" },
+      { id: "ths", date: "2027-04-28", session: "AM", time: "08:30", en: "Tourism & Hospitality Studies 1, 2", zh: "旅遊與款待（一）及（二）" },
+      { id: "opt1", date: "2027-04-29", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
+      { id: "lit2b", date: "2027-04-29", session: "PM", time: "13:30", en: "Literature in English 2", zh: "英語文學（二）", note: "暫定（註 2）", tentative: true },
+      { id: "ers", date: "2027-04-30", session: "AM", time: "08:30", en: "Ethics & Religious Studies 1, 2", zh: "倫理與宗教（一）及（二）" },
+      { id: "opt2", date: "2027-05-03", session: "AM", time: "08:30", en: "Literature in English 1 / Technology & Living 1, 2 / Physical Education 1, 2 / Music 1A & 1B", zh: "英語文學（一）／科技與生活／體育／音樂 1A及1B", note: "暫定；報考截止後落實（註 2）", tentative: true },
+      { id: "lit2c", date: "2027-05-03", session: "PM", time: "13:30", en: "Literature in English 2 / Reserve", zh: "英語文學（二）／後備", note: "英語文學暫定（註 2）", tentative: true },
+      { id: "reserve", date: "2027-05-04", session: "AM", time: "08:30", en: "Reserve", zh: "後備" },
     ];
+
+    const DEFAULT_FOCUS_ID = "va";
+    let focusId = DEFAULT_FOCUS_ID;
+
+    function examById(id) {
+      return EXAMS.find(e => e.id === id) || EXAMS[0];
+    }
 
     function hkDate(dateStr, timeStr) {
       return new Date(`${dateStr}T${timeStr}:00+08:00`);
@@ -232,20 +279,68 @@
       return s === "PM" ? "下午 PM" : "上午 AM";
     }
 
+    function sessionEn(s) {
+      return s === "PM" ? "PM" : "AM";
+    }
+
+    function shortDateEn(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return `${d} ${months[m - 1]} ${y}`;
+    }
+
+    function updateHeroLabels(exam) {
+      const isDefault = exam.id === DEFAULT_FOCUS_ID;
+      document.getElementById("heroTitle").textContent = isDefault
+        ? `距離筆試開始（${exam.zh.split("／")[0]}）`
+        : `距離開考：${exam.zh}`;
+      document.getElementById("heroEn").textContent =
+        `Countdown — ${exam.en} · ${shortDateEn(exam.date)} · ${sessionEn(exam.session)}`;
+      document.getElementById("heroTz").textContent = exam.session === "PM"
+        ? "時區：香港時間（Asia/Hong_Kong）· 官方只列上下午；下午倒數以 13:30 起計"
+        : "時區：香港時間（Asia/Hong_Kong）· 官方時間表只列上午／下午；倒數以當日上午 08:30 起計";
+      document.getElementById("resetFocus").hidden = isDefault;
+    }
+
+    function setFocus(id, { scroll } = {}) {
+      const exam = examById(id);
+      focusId = exam.id;
+      updateHeroLabels(exam);
+
+      document.querySelectorAll(".card[data-focus]").forEach(card => {
+        card.classList.toggle("active", card.dataset.focus === focusId);
+      });
+      document.querySelectorAll("#timetableBody tr").forEach(tr => {
+        tr.classList.toggle("selected", tr.dataset.id === focusId);
+      });
+
+      tick();
+      if (scroll) document.getElementById("hero").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     function tick() {
       const now = Date.now();
-      const first = hkDate("2027-04-06", "08:30");
-      renderDigits(document.getElementById("mainCountdown"), parts(first - now), "筆試期已開始");
+      const focused = examById(focusId);
+      const target = hkDate(focused.date, focused.time);
+      renderDigits(
+        document.getElementById("mainCountdown"),
+        parts(target - now),
+        "已開始／已過去"
+      );
 
       document.getElementById("cdChinese").textContent =
         fmtRemain(parts(hkDate("2027-04-08", "08:30") - now));
       document.getElementById("cdEnglish").textContent =
         fmtRemain(parts(hkDate("2027-04-09", "08:30") - now));
+      document.getElementById("cdMath").textContent =
+        fmtRemain(parts(hkDate("2027-04-12", "08:30") - now));
+      document.getElementById("cdCsd").textContent =
+        fmtRemain(parts(hkDate("2027-04-13", "08:30") - now));
 
       let nextIdx = EXAMS.findIndex(e => hkDate(e.date, e.time) > new Date(now));
       document.querySelectorAll("#timetableBody tr").forEach((tr, i) => {
         tr.classList.toggle("past", nextIdx !== -1 ? i < nextIdx : true);
-        tr.classList.toggle("next", i === nextIdx);
+        tr.classList.toggle("next", i === nextIdx && focusId === DEFAULT_FOCUS_ID);
       });
     }
 
@@ -254,16 +349,42 @@
       body.innerHTML = EXAMS.map(e => {
         const note = e.note ? `<div style="color:var(--muted);font-size:.8rem;margin-top:.2rem">${e.note}</div>` : "";
         const tag = e.tentative ? `<span class="tag">暫定</span>` : "";
-        return `<tr data-start="${e.date}T${e.time}">
+        return `<tr data-id="${e.id}" data-start="${e.date}T${e.time}" tabindex="0" role="button" aria-label="選取 ${e.zh}">
           <td>${prettyDate(e.date)}<div style="color:var(--muted);font-size:.8rem">${e.date}</div></td>
           <td>${sessionLabel(e.session)}</td>
           <td><strong>${e.zh}</strong>${tag}<div style="color:var(--muted);font-size:.85rem">${e.en}</div>${note}</td>
         </tr>`;
       }).join("");
+
+      body.querySelectorAll("tr").forEach(tr => {
+        const activate = () => setFocus(tr.dataset.id, { scroll: true });
+        tr.addEventListener("click", activate);
+        tr.addEventListener("keydown", ev => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            activate();
+          }
+        });
+      });
     }
 
+    document.querySelectorAll(".card[data-focus]").forEach(card => {
+      const activate = () => setFocus(card.dataset.focus, { scroll: true });
+      card.addEventListener("click", activate);
+      card.addEventListener("keydown", ev => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          activate();
+        }
+      });
+    });
+
+    document.getElementById("resetFocus").addEventListener("click", () => {
+      setFocus(DEFAULT_FOCUS_ID, { scroll: true });
+    });
+
     buildTable();
-    tick();
+    setFocus(DEFAULT_FOCUS_ID);
     setInterval(tick, 1000);
   </script>
 </body>
